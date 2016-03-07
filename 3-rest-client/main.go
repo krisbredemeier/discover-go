@@ -15,6 +15,7 @@ func main() {
 
 	var m Movie
 	if err := json.NewDecoder(resp.Body).Decode(&m); err != nil {
+		fmt.Errorf("errorparsingbody%v", err)
 		return
 	}
 	rating := int(m.IMDBRating * 10)
