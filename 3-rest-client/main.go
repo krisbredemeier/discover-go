@@ -7,20 +7,17 @@ import (
 )
 
 func main() {
-	url := "http://www.omdbapi.com/?i=tt0372784&plot=short&r=json"
-	resp, err := http.Get(url)
+	resp, err := http.Get("http://www.omdbapi.com/?i=tt0372784&plot=short&r=json")
 	if err != nil {
 		return
 	}
 	fmt.Println("status code is", resp.Status)
 
-	var decodedJSON Moive
-	json.NewDecoder(resp.Body).Decode(&decodedJSON)
-	if err != nil {
-		fmt.Println(err)
+	var m Movie
+	if err := json.NewDecoder(resp.Body).Decode(&m); err != nil {
 		return
 	}
-	rating := int(decodedJSON.IMDBRating * 10)
+	rating := int(m.IMDBRating * 10)
 
-	fmt.Printf("The movie : %s was released in %s - the IMDB rating is %d%% with %s votes.\n", decodedJSON.Title, decodedJSON.Released, rating, decodedJSON.IMDBVotes)
+	fmt.Printf("The movie : %s was released in %s - the IMDB rating is %d%% with %s votes.\n", m.Title, m.Released, rating, m.IMDBVotes)
 }
